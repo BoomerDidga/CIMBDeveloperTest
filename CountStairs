@@ -58,7 +58,7 @@ public class PartitionNumber {
 
             // ถ้าผลรวมเท่ากับ n แสดงผลลัพธ์
             if (sum == n) {
-                System.out.println(current);
+                //System.out.println(current);
                 continue; // ข้ามไปชุดถัดไป
             }
             
