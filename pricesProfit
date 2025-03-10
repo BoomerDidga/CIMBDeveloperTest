@@ -1,0 +1,100 @@
+// Online Java Compiler
+// Use this editor to write, compile and run your Java code online
+
+/*
+Q1
+- There are 3 problems, please complete it as much as you can.
+- Solution can be implemented on your prefered language (Big plus for Java / Kothlin)
+- Use Git for version control. We expects to see commit logs as well to see how you did with the solution.
+- Please send us with your public git repository.
+- Solve problem in the best efficiency way, Score will be calculated from two factors.
+	- In term of time complexity Big(0).
+	- In term of functionality.
+	- Even you didn't complete with the solution, but we still determine your style of coding, so please put the code as much as you can.
+- For sending your solution, please share your git repository.
+
+## Q1
+You are given an array 'prices' where 'prices[i]' is the price of a given stock on the 'ith' day.
+
+You want to maximize your profit by choosing a **single** day to buy one stock and choosing a **different day in the future** to sell that stock.
+
+Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return '0'.
+
+### Example 1 :
+
+**Input**: prices = [7, 1, 5, 3, 6, 4] </br>
+**Output**: 5 </br>
+**Explanation**: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5. </br>
+Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
+
+### Example 2 :
+
+**Input**: prices = [7, 6, 4, 3, 1] </br>
+**Output**: 0 </br>
+**Explanation**: In this case, no transactions are done and max profit = 0.
+
+### Constraint
+- '1 <= prices.length <= 10^5'
+- '0 <= prices[i] <= 10^4'
+
+*/
+
+// Online Java Compiler
+// Use this editor to write, compile and run your Java code online
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
+public class PriceProfit {
+    public static void findProfit(int [] n, int sell) {
+        
+        //'1 <= prices.length <= 10^5'
+        //'0 <= prices[i] <= 10^4'
+        
+        if(n.length >= 1 && n.length <= Math.pow(10, 5))
+        {
+        
+            ArrayList<Integer> prices2 = new ArrayList<Integer>();
+            for (int i : n)
+            {
+                if(i >= 0 && i <= Math.pow(10, 4))
+                {
+                    prices2.add(i);
+                }
+            }
+            
+            int check = prices2.indexOf( prices2.get(sell-1) );
+            
+            if(check > 0 && check < prices2.size())
+            {
+                for(int t = 0; t < check; t++)
+                {
+                    prices2.remove(t);
+                }
+            }
+            
+            int maximum = prices2.get(0);
+            for (int s = 1; s < prices2.size(); s++) {
+                if (maximum < prices2.get(s))
+                    maximum = prices2.get(s);
+            }
+            
+            int profit = maximum - prices2.get(0);
+            System.out.println(profit);
+        }
+        else
+        {
+            System.out.println(0);
+        }
+       
+    }
+
+    public static void main(String[] args) {
+        int [] prices = new int[] {7, 1, 5, 3, 6, 4}; 
+        findProfit(prices, 2);
+        
+        int [] prices3 = new int[] {7, 6, 4, 3, 1}; 
+        findProfit(prices3, 2);
+    }
+}
