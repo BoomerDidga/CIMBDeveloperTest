@@ -1,0 +1,109 @@
+// Online Java Compiler
+// Use this editor to write, compile and run your Java code online
+
+/*
+Q1
+Given two version numbers, 'version1' and 'version2', compare them.
+
+Verson numbers consists of **one or more revisions** joined by a dot '.'.
+Each revisions consists of **digits** and may contain leading **zeros**.
+Every revision contains **at least one character**.
+Revisions are **0-indexed from left to right, with the leftmost revision being revision 0, the next revision being revision 1, and so on. For example '2.5.33' and '0.1' are valid version numbers.
+
+To compare versions numbers, compare their revisions in **left- to-right order**. It a version number does not specify a revision at an index, then **treat the revision as** '0'.
+
+For example, version '1.0' is less than version '1.1' because their revision 0s are the same, but their revision 1s are '0' and '1' respectively, '0' < '1'.
+
+Return the following:
+-If 'version1 < version2' return '-1'.
+-If 'version1 > version2' return '1'.
+-Otherwise, return '0'.
+
+###Example 1:
+**Input**: version1 = "1.01" and version2 = "1.001" </br>
+**Output**: 0
+**Explanation**: Ignoring Leading zeroes, both "01" and "001" represent the same integer "1".
+
+###Example 2:
+**Input**: version1 = "1.0" and version2 = "1.0.0" </br>
+**Output**: 0
+**Explanation**: version1 does not specify revision 2, which means it is treated as "0".
+
+###Example 3:
+**Input**: version1 = "0.0" and version2 = "1.1" </br>
+**Output**: -1
+**Explanation**: version1's revision 0 is "0", revision 2's revision 1 is "1". 0 < 1, so version1 < version2.
+
+###Constraint
+- '1 <= version1.length, version2.lenght <= 500'
+- 'version1' and 'version2' only contain digits '.'
+- 'version1' and 'version2' are valid version numbers
+
+*/
+
+import java.util.*;
+
+class Main {
+    
+    public static int compareVersions(String version1, String version2)
+    {
+        if (version1.length() < 1 || version1.length() > 500 || version2.length() < 1 || version2.length() > 500) {
+            throw new IllegalArgumentException("Version length must be between 1 and 500 characters.");
+        }
+        if (!version1.matches("[0-9.]+") || !version2.matches("[0-9.]+")) {
+            throw new IllegalArgumentException("Version must only contain digits and dots.");
+        }
+        
+        List<String> version3 = new ArrayList<>(Arrays.asList(version1.split("\\.")));
+        List<String> version4 = new ArrayList<>(Arrays.asList(version2.split("\\.")));
+        
+        int maxLength = Math.max(version3.size(), version4.size());
+        
+        if(version3.size() < maxLength)
+        {
+            for(int k = 0; k < maxLength; k++)
+            {
+                version3.add("0");
+            }
+        }
+        if(version4.size() < maxLength)
+        {
+            for(int m = 0; m < maxLength; m++)
+            {
+                version4.add("0");
+            }
+        }
+        
+        int output = 0;
+        for(int c = 0; c < maxLength; c++)
+        {
+            if(Integer.parseInt(version3.get(c)) == Integer.parseInt(version4.get(c)))
+            {
+                output = 0;
+            }
+            else if(Integer.parseInt(version3.get(c)) < Integer.parseInt(version4.get(c)))
+            {
+                output = -1;
+            }
+            else if(Integer.parseInt(version3.get(c)) > Integer.parseInt(version4.get(c)))
+            {
+                output = 1;
+            }
+            else {
+                output = 0;
+            }
+        }
+        return output;
+    }
+    
+    
+    public static void main(String[] args) {
+        
+        // Test cases
+        System.out.println(compareVersions("1.01", "1.001"));  // Output: 0
+        System.out.println(compareVersions("1.0", "1.0.0"));   // Output: 0
+        System.out.println(compareVersions("0.0", "1.1"));     // Output: -1
+        System.out.println(compareVersions("1.2", "1.10"));    // Output: -1
+        System.out.println(compareVersions("1.10", "1.2"));    // Output: 1
+    }
+}
