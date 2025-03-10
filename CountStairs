@@ -1,0 +1,81 @@
+// Online Java Compiler
+// Use this editor to write, compile and run your Java code online
+
+/*
+Q3
+You are climbing a staircase. It takes 'n' steps to reach the top.
+
+Each time you can either climb '1' or '2'. In how many distinct way you can climb to the top?
+
+### Example 1 :
+
+**Input**: n = 2 </br>
+**Output**: 2 </br>
+**Explanation**: There are two ways to climb to the top. 
+1. 1 step + 1 step
+2. 2 steps
+
+### Example 2 :
+
+**Input**: n = 3 </br>
+**Output**: 3 </br>
+**Explanation**: There are three ways to climb to the top.
+1. 1 step + 1 step + 1 step
+2. 1 step + 2 steps
+3. 2 step + 1 steps
+
+### Constraint
+- 1 <= n <= 45
+
+*/
+
+//3 = {{1, 1, 1}, {1, 2}, {2, 1}}
+//[3]
+//[2, 1]
+//[1, 2]
+//[1, 1, 1]
+//3
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
+public class PartitionNumber {
+    public static void findPartitions(int n) {
+        // ใช้ Stack ในการเก็บค่าชุดตัวเลขที่รวมกันแล้วได้ n
+        Stack<List<Integer>> stack = new Stack<>();
+        stack.push(new ArrayList<>()); // เริ่มต้นด้วยลิสต์ว่าง
+        int countStairs = -1; //ไม่นับรวม n = ค่าที่ใช้ทดสอบ
+        
+        while (!stack.isEmpty()) {
+            List<Integer> current = stack.pop(); // ดึงรายการจาก Stack ออกมา
+            int sum = 0;
+            
+            // คำนวณผลรวมของตัวเลขที่อยู่ในลิสต์
+            for (int num : current) {
+                sum += num;
+            }
+
+            // ถ้าผลรวมเท่ากับ n แสดงผลลัพธ์
+            if (sum == n) {
+                System.out.println(current);
+                continue; // ข้ามไปชุดถัดไป
+            }
+            
+            // หาเลขที่สามารถเพิ่มเข้าไปให้ได้ผลรวมเป็น n
+            for (int i = 1; i <= n - sum; i++) {
+                List<Integer> newPartition = new ArrayList<>(current); // คัดลอกลิสต์เดิม
+                newPartition.add(i); // เพิ่มตัวเลขใหม่เข้าไป
+                stack.push(newPartition); // ใส่กลับเข้าไปใน Stack เพื่อประมวลผลต่อ
+            }
+            countStairs = countStairs + 1;
+        }
+        System.out.println(countStairs);
+       
+    }
+
+    public static void main(String[] args) {
+        int n = 4; // กำหนดค่าของ n
+        findPartitions(n); // เรียกใช้ฟังก์ชันเพื่อหาชุดตัวเลข
+    }
+}
